@@ -1,0 +1,62 @@
+Cloud Kitchen Application
+Overview
+This Cloud Kitchen Application is built using Django and provides a platform for managing kitchen operations, including order processing, menu management, and customer interactions. It is designed to streamline the operations of cloud kitchens and enhance overall efficiency.
+
+Features
+Order Management: Create, update, and track customer orders.
+Menu Management: Manage dishes, categories, and pricing.
+Customer Management: Handle customer information and interactions.
+Reporting: Generate reports on orders, sales, and kitchen performance.
+Authentication: Secure login and registration for kitchen staff.
+Prerequisites
+Before you begin, ensure you have met the following requirements:
+
+Python 3.8 or higher
+Django 4.0 or higher
+A database engine (e.g., PostgreSQL, SQLite)
+Installation
+Clone the repository:
+
+bash
+Copy code
+git clone git@github.com:belleysatish/cloud-kitchen.git
+cd cloud-kitchen
+Create a virtual environment:
+
+bash
+Copy code
+python -m venv env
+Activate the virtual environment:
+
+On Windows:
+
+bash
+Copy code
+.\env\Scripts\activate
+On macOS/Linux:
+
+bash
+Copy code
+source env/bin/activate
+Install the dependencies:
+
+bash
+Copy code
+pip install -r requirements.txt
+Apply database migrations:
+
+bash
+Copy code
+python manage.py migrate
+Create a superuser (admin) account:
+
+bash
+Copy code
+python manage.py createsuperuser
+Run the development server:
+
+bash
+Copy code
+python manage.py runserver
+Access the application at http://127.0.0.1:8000/.
+
