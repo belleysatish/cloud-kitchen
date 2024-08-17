@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Management</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Support Management System</h1>
+    </header>
+    <main>
+        <section id="tickets">
+            <h2>Support Tickets</h2>
+            <form id="ticket-form">
+                <input type="text" id="title" placeholder="Title" required>
+                <textarea id="description" placeholder="Description" required></textarea>
+                <select id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Order Issues">Order Issues</option>
+                    <option value="Delivery Issues">Delivery Issues</option>
+                    <option value="Payment Issues">Payment Issues</option>
+                    <option value="General Inquiries">General Inquiries</option>
+                </select>
+                <select id="priority" required>
+                    <option value="">Select Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <button type="submit">Submit Ticket</button>
+            </form>
+            <ul id="ticket-list"></ul>
+        </section>
+        <section id="ratings">
+            <h2>Support Experience</h2>
+            <form id="rating-form">
+                <input type="number" id="order-id" placeholder="Order ID" required>
+                <input type="number" id="rating" min="1" max="5" placeholder="Rating (1-5)" required>
+                <textarea id="comments" placeholder="Comments"></textarea>
+                <button type="submit">Submit Rating</button>
+            </form>
+            <ul id="rating-list"></ul>
+        </section>
+    </main>
+    <script>
+        // JavaScript for handling form submissions and fetching data
+
+        const apiBaseUrl = 'http://localhost:8000';  // Change to your API base URL
+
+        document.getElementById('ticket-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+            const priority = document.getElementById('priority').value;
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/tickets/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title,
+                        description,
+                        category,
+                        priority,
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderTicket(data);
+                    document.getElementById('ticket-form').reset();
+                } else {
+                    console.error('Error submitting ticket');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        document.getElementById('rating-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const orderId = document.getElementById('order-id').value;
+            const rating = document.getElementById('rating').value;
+            const comments = document.getElementById('comments').value;
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/ratings/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        order: orderId,
+                        rating,
+                        comments,
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderRating(data);
+                    document.getElementById('rating-form').reset();
+                } else {
+                    console.error('Error submitting rating');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function fetchTickets() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/tickets/`);
+                if (response.ok) {
+                    const data = await response.json();
+                    data.forEach(ticket => renderTicket(ticket));
+                } else {
+                    console.error('Error fetching tickets');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function fetchRatings() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/ratings/`);
+                if (response.ok) {
+                    const data = await response.json();
+                    data.forEach(rating => renderRating(rating));
+                } else {
+                    console.error('Error fetching ratings');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function renderTicket(ticket) {
+            const ticketList = document.getElementById('ticket-list');
+            const li = document.createElement('li');
+            li.textContent = `${ticket.title} - ${ticket.category} - ${ticket.priority} - ${ticket.status}`;
+            ticketList.appendChild(li);
+        }
+
+        function renderRating(rating) {
+            const ratingList = document.getElementById('rating-list');
+            const li = document.createElement('li');
+            li.textContent = `Order ID: ${rating.order} - Rating: ${rating.rating} - Comments: ${rating.comments}`;
+            ratingList.appendChild(li);
+        }
+
+        // Fetch existing tickets and ratings on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchTickets();
+            fetchRatings();
+        });
+    </script>
+</body>
+</html>
