@@ -1,0 +1,35 @@
+<!-- users.html -->
+{% extends 'base.html' %}
+
+{% block title %}Users - Cloud Kitchen{% endblock %}
+
+{% block content %}
+<h2 class="text-center">User List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Avatar</th>
+            <th>User Type</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td><img src="{{ user.avatar }}" alt="{{ user.username }}" class="img-thumbnail" width="50"></td>
+            <td>{{ user.user_type }}</td>
+            <td>{{ user.created_at }}</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

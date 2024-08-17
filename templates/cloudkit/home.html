@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Kitchen</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script defer src="{% static 'scripts.js' %}"></script>
+</head>
+<body>
+    <header>
+        <h1>Cloud Kitchen</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'foodstyle_list_create' %}">Food Styles</a></li>
+                <li><a href="{% url 'category_list_create' %}">Categories</a></li>
+                <li><a href="{% url 'meal_list_create' %}">Meals</a></li>
+                <li><a href="{% url 'item_list_create' %}">Items</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="food-styles">
+            <h2>Food Styles</h2>
+            <div id="food-style-list"></div>
+        </section>
+        <section id="categories">
+            <h2>Categories</h2>
+            <div id="category-list"></div>
+        </section>
+        <section id="meals">
+            <h2>Meals</h2>
+            <div id="meal-list"></div>
+        </section>
+        <section id="items">
+            <h2>Items</h2>
+            <div id="item-list"></div>
+        </section>
+    </main>
+</body>
+</html>
